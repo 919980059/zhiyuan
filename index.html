@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>知园吃土计算器</title>
+    <base href="./" />
+    <meta charset="utf-8" />
+    <meta name="description" content="知园,计算器,吃土" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="author" content="D5-1-301_401 Widzz" />
+    <link rel="icon" type="img/x-icon" href="./assets/huahua.jpg" />
+    <style type="text/css">
+      @keyframes scaleAnimation {
+        from {
+          transform: scale(0.1);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes turning {
+        from {
+          /* opacity: 1; */
+          backdrop-filter: blur(0px);
+        }
+        to {
+          /* opacity: 0.7; */
+          backdrop-filter: blur(8px);
+        }
+      }
+
+      .turning {
+        animation: turning 5s 0s ease-in-out alternate;
+      }
+
+      @keyframes zoomInOut {
+        from {
+          background-size: 100%, 100%;
+        }
+        to {
+          background-size: 150%, 150%;
+        }
+      }
+
+      @keyframes rotating {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      html {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        width: 100%;
+        margin: 0;
+        height: 100%;
+        background: url(./assets/zhiyuan.jpg) no-repeat center fixed;
+        background-size: cover;
+      }
+
+      .container {
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+        display: flex;
+        animation: scaleAnimation 0.5s 0s linear;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+      }
+      .container::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+      }
+
+      .main {
+        display: flex;
+        padding: 12px 24px;
+        max-width: 500px;
+        margin-top: 12px;
+        animation: turning 2s 0s ease-in-out infinite alternate;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.65);
+        border-radius: 5px;
+        border: 1px solid #aaaaaa50;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+          0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 5px 0px rgba(0, 0, 0, 0.12) !important;
+      }
+
+      .title {
+        font-size: 30px;
+        cursor: default;
+        font-weight: 600;
+        font-family: cursive;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .author {
+        align-self: flex-end;
+        font-family: fantasy;
+        font-size: 13px;
+      }
+
+      .rotating-animation {
+        animation: rotating 20s 0s linear infinite;
+      }
+
+      .img {
+        cursor: pointer;
+        height: 40px;
+        border-radius: 50%;
+        margin-left: 24px;
+      }
+
+      .img:hover {
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+          0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+      }
+
+      .img img {
+        border-radius: 50%;
+        height: 100%;
+        width: auto;
+      }
+
+      .version {
+        font-size: 18px;
+        margin-left: 8px;
+        position: relative;
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        font-size: 13px;
+        width: 100%;
+        color: #000000;
+        font-weight: 600;
+      }
+
+      .table {
+        width: 100%;
+        margin-top: 24px;
+        border-radius: 5px;
+      }
+      .table tr {
+        width: 100%;
+        padding: 0 12px;
+      }
+
+      .table th,
+      .table td {
+        display: table-cell;
+        color: #000000;
+        height: 40px;
+        background: #def2ff50;
+        text-align: center;
+        padding: 8px 12px;
+        border: 1px solid #26262650;
+        border-radius: 5px;
+      }
+
+      .table th:nth-child(1),
+      td:nth-child(1) {
+        width: 30%;
+      }
+
+      .table th:nth-child(2),
+      td:nth-child(2) {
+        width: 40%;
+      }
+
+      .table th:nth-child(3),
+      td:nth-child(3) {
+        width: 30%;
+      }
+
+      .table th:hover,
+      td:hover {
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+          0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+      }
+
+      .calc {
+        display: flex;
+        font-size: 15px;
+        font-weight: bold;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .calc > div {
+        margin-top: 8px;
+        width: 50%;
+      }
+
+      .calc > div input {
+        width: 50%;
+      }
+      input:not(.checkbox) {
+        border-radius: 5px;
+        height: 28px;
+        padding: 0 8px;
+        font-size: 14px;
+        border: 1px solid #aaaaaa;
+      }
+
+      input:not(.checkbox):hover {
+        border-color: #039be5;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+          0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 5px 0px rgba(0, 0, 0, 0.12) !important;
+      }
+
+      input:not(.checkbox):focus {
+        border-color: #039be5;
+        outline: none;
+      }
+
+      select {
+        width: 30%;
+        border-radius: 5px;
+        outline: none;
+        height: 28px;
+      }
+
+      .checkbox {
+        margin: 5px 12px 2px 4px;
+        height: 16px;
+        width: 16px;
+      }
+
+      .calc-buttons {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      .calc-buttons > .calc-button:last-child {
+        /* margin-right: 50px; */
+        margin-left: 8px;
+      }
+
+      .red-bg:hover {
+        background: red !important;
+        color: white !important;
+      }
+
+      .blue-bg:hover {
+        background: #039be5 !important;
+        color: white !important;
+      }
+
+      .calc-button {
+        border: 1px solid #aaaaaa;
+        background: white;
+        outline: none;
+        font-weight: 600;
+        /* margin-top: 8px; */
+        border-radius: 5px;
+        padding: 4px 12px;
+      }
+
+      .calc-button:hover {
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+          0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 5px 0px rgba(0, 0, 0, 0.12) !important;
+        background: #aaaaaa10;
+        color: #039be5;
+        cursor: pointer;
+      }
+
+      .calc-button:active {
+        background: #30303030;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      @media screen and (max-width: 599px) {
+        .main {
+          width: 100%;
+          padding: 8px 10px;
+        }
+
+        .title {
+          font-size: 24px;
+        }
+
+        .calc > div input {
+          width: 70%;
+        }
+        .calc > div select {
+          width: 40%;
+        }
+        .table td,
+        .table th {
+          width: 33%;
+          padding: 4px;
+        }
+      }
+    </style>
+    <script>
+      const house = { amount: "", area: "", price: "" };
+      // 契税率
+      let taxesRate = "";
+      // 维修基金
+      let repairFound = 61;
+      // 物业费
+      const propertyFee = { price: 2.98, month: 12 };
+      // 电费
+      let elFee = "";
+      let lastAmount = "";
+      let lastPrice = "";
+      let lastArea = "";
+      let lastElFee = "";
+      let houseType = 0;
+      let houseCount = 0;
+
+      let calculate = {
+        taxes: "",
+        repair: "",
+        property: "",
+        feeTotal: "",
+        noTaxes: "",
+        total: "",
+      };
+      let animationFlag = 0;
+      let userChange = true; // 是否重新操作
+
+      function onAudioLoad() {
+        const audio = document.getElementById("audio");
+        if (audio.paused) {
+          document.getElementById("audioControl").title = "暂停";
+          document
+            .getElementById("audioControl")
+            .classList.add("rotating-animation");
+          audio.play();
+        } else {
+          document.getElementById("audioControl").title = "播放";
+          audio.pause();
+          document
+            .getElementById("audioControl")
+            .classList.remove("rotating-animation");
+        }
+      }
+
+      function onSelect() {
+        houseType = document.getElementById("houseType").value;
+        houseCount = document.getElementById("houseCount").value;
+        userChange = true;
+        getAndSetRate();
+        setRepairFund();
+        setPropertyPrice();
+      }
+
+      function getAndSetRate() {
+        console.log(houseCount, "houseCount");
+        console.log(house, "house");
+        switch (parseInt(houseCount)) {
+          case 0: {
+            if (house.area <= 90) {
+              taxesRate = 0.01;
+            } else {
+              taxesRate = 0.015;
+            }
+            break;
+          }
+          case 1: {
+            if (house.area <= 90) {
+              taxesRate = 0.01;
+            } else {
+              taxesRate = 0.02;
+            }
+            break;
+          }
+          case 2: {
+            taxesRate = 0.03;
+            break;
+          }
+        }
+        document.getElementById("taxRate").value = taxesRate;
+      }
+
+      function setRepairFund() {
+        if (parseInt(houseType) === 1) {
+          repairFound = 61;
+          propertyFee.price = 3.84;
+        } else {
+          repairFound = 73;
+          propertyFee.price = 2.98;
+        }
+        document.getElementById("repairFund").value = repairFound;
+      }
+
+      function setPropertyPrice() {
+        document.getElementById("propertyPrice").innerText =
+          propertyFee.price.toFixed(2);
+      }
+
+      function clearAll() {
+        house.amount = "";
+        house.price = "";
+        house.area = "";
+        taxesRate = 0.01;
+        repairFound = 61;
+        houseType = 0;
+        houseCount = 0;
+        propertyFee.price = 2.98;
+        document.getElementById("houseAmount").value = house.amount;
+        document.getElementById("price").value = house.price;
+        document.getElementById("houseArea").value = house.area;
+        document.getElementById("houseType").value = houseType;
+        document.getElementById("houseCount").value = houseCount;
+        document.getElementById("repairFund").value = repairFound;
+        document.getElementById("taxRate").value = taxesRate;
+        onClear();
+        setPropertyPrice();
+      }
+
+      function onCalculate() {
+        if (!house.area && (!house.amount || !house.price)) {
+          alert("请输入毛坯总价或单价、建筑面积后再计算！");
+        } else if (!house.amount && !house.price) {
+          alert("请输入毛坯总价或单价后再计算！");
+        } else if (!house.area) {
+          alert("请输入建筑面积后再计算！");
+        } else {
+          if (userChange) {
+            userChange = false;
+            const el = document.getElementsByClassName("main")[0];
+            el.style.transition = "transform 0.6s 0s ease-in-out";
+            if (localStorage.getItem("animationFLag")) {
+              animationFlag = Number(localStorage.getItem("animationFlag"));
+            }
+            switch (animationFlag) {
+              case 0: {
+                el.style.transform = "rotateZ(360deg)";
+                animationFlag = 1;
+                break;
+              }
+              case 1: {
+                el.style.transform = "rotateZ(-360deg)";
+                animationFlag = 2;
+                break;
+              }
+              case 2: {
+                animationFlag = 3;
+                el.style.transform = "rotateY(360deg)";
+                break;
+              }
+              case 3: {
+                animationFlag = 1;
+                el.style.transform = "rotateY(-360deg)";
+                break;
+              }
+            }
+            localStorage.setItem("animationFlag", animationFlag.toString(10));
+            el.addEventListener("webkitTransitionEnd", () => {
+              el.style.transition = null;
+              el.style.transform = null;
+              this.getCalculation();
+              // el.removeEventListener('webkitTransitionEnd');
+            });
+          }
+        }
+      }
+
+      function getCalculation() {
+        calculate.taxes = house.amount * taxesRate;
+        calculate.repair = house.area * repairFound;
+        calculate.property = house.area * propertyFee.price * propertyFee.month;
+        calculate.feeTotal = +elFee;
+        calculate.noTaxes =
+          calculate.repair + calculate.feeTotal + calculate.property;
+        calculate.total = calculate.noTaxes + calculate.taxes;
+        Object.entries(calculate).forEach((item) => {
+          console.log(item, "item");
+          setTextToSpan(item[0], item[1]);
+        });
+      }
+
+      function setTextToSpan(id, value) {
+        let text;
+        if (value) {
+          text = Math.round(value * 10) / 10 + "元";
+        } else {
+          text = "0元";
+        }
+        document.getElementById(id).innerText = text;
+      }
+
+      function onAmountInput() {
+        const element = document.getElementById("houseAmount");
+        taxesRate = document.getElementById("taxRate").value;
+        // const reg = /(^[0-9]\d*$)/
+        // const reg = /^\d*\.?\d*$/;
+        const reg = /^[0-9]*([.]?[0-9]{0,2})?$/;
+        if (reg.test(element.value)) {
+        } else {
+          // element.value = element.value.replace(/\D/g, '');
+          element.value = lastAmount;
+        }
+        lastAmount = element.value;
+        house.amount = element.value;
+        if (house.area && house.amount) {
+          house.price = Math.round((house.amount / house.area) * 100) / 100;
+          const element = document.getElementById("price");
+          element.value = house.price;
+        }
+        document.getElementById("price").disabled = !!element.value;
+        if (!element.value) {
+          document.getElementById("price").value = "";
+        }
+        userChange = true;
+        onClear();
+      }
+
+      function onAreaInput() {
+        const element = document.getElementById("houseArea");
+        // const reg = /^\d*\.?\d*$/;
+        const reg = /^[0-9]*([.]?[0-9]{0,2})?$/;
+        if (reg.test(element.value)) {
+        } else {
+          element.value = lastArea;
+        }
+        house.area = element.value;
+        lastArea = element.value;
+        if (house.amount && house.area) {
+          house.price = Math.round((house.amount / house.area) * 100) / 100;
+          const element = document.getElementById("price");
+          element.value = house.price;
+        } else if (house.area && house.price) {
+          house.amount = Math.round(house.price * house.area * 100) / 100;
+          const element = document.getElementById("houseAmount");
+          element.value = house.amount;
+        }
+        onClear();
+        userChange = true;
+        getAndSetRate();
+      }
+
+      function onPriceInput() {
+        const element = document.getElementById("price");
+        // const reg = /(^[0-9]\d*$)/
+        // const reg = /^\d*\.?\d*$/;
+        const reg = /^[0-9]*([.]?[0-9]{0,2})?$/;
+        if (reg.test(element.value)) {
+        } else {
+          // element.value = element.value.replace(/\D/g, '');
+          element.value = lastPrice;
+        }
+        lastPrice = element.value;
+        house.price = element.value;
+        if (house.area && house.price) {
+          house.amount = Math.round(house.price * house.area * 100) / 100;
+          const element = document.getElementById("houseAmount");
+          element.value = house.amount;
+        }
+        document.getElementById("houseAmount").disabled = !!element.value;
+        if (!element.value) {
+          document.getElementById("houseAmount").value = "";
+        }
+        userChange = true;
+        onClear();
+      }
+
+      function onElFeeInput() {
+        const element = document.getElementById("elFee");
+        const reg = /^[0-9]*([.]?[0-9]{0,2})?$/;
+        if (reg.test(element.value)) {
+        } else {
+          // element.value = element.value.replace(/\D/g, '');
+          element.value = lastElFee;
+        }
+        lastElFee = element.value;
+        elFee = element.value;
+        userChange = true;
+      }
+
+      function onClear() {
+        if (!house.amount && !house.area) {
+          calculate = {
+            taxes: "",
+            repair: "",
+            property: "",
+            elFee: "",
+            noTaxes: "",
+            total: "",
+          };
+          Object.entries(calculate).forEach((item) => {
+            setTextToSpan(item[0], item[1]);
+          });
+        }
+      }
+
+      function onMainEnter() {
+        const element = document.querySelector(".main");
+        element.style.animationPlayState = "paused";
+      }
+      function onMainLeave() {
+        const element = document.querySelector(".main");
+        element.style.animationPlayState = "running";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div
+        class="main"
+        onmouseenter="onMainEnter()"
+        onmouseleave="onMainLeave()"
+      >
+        <audio id="audio" src="./assets/Annalia-Timeout.mp3" loop></audio>
+        <span class="title">
+          <span> 知园吃土计算器 </span>
+          <div class="version">1.0</div>
+          <div
+            onclick="onAudioLoad()"
+            id="audioControl"
+            title="播放"
+            class="img"
+          >
+            <img src="./assets/huahua.jpg" />
+          </div>
+        </span>
+        <div class="author"><span>By Widzz</span></div>
+        <div class="calc">
+          <div>
+            <span>毛坯总价：</span>
+            <input
+              id="houseAmount"
+              placeholder="请输入总价..."
+              type="text"
+              oninput="onAmountInput()"
+            />
+            <span>元</span>
+          </div>
+          <div>
+            <span>建筑面积：</span>
+            <input
+              id="houseArea"
+              placeholder="请输入建筑面积..."
+              type="text"
+              oninput="onAreaInput()"
+            />
+            <span>平</span>
+          </div>
+          <div>
+            <span>毛坯单价：</span>
+            <input
+              id="price"
+              placeholder="请输入单价..."
+              type="text"
+              oninput="onPriceInput()"
+            />
+            <span>元</span>
+          </div>
+          <div></div>
+          <div>
+            <span>房屋套数：</span>
+            <select id="houseCount" onchange="onSelect()">
+              <option value="0" selected>首套</option>
+              <option value="1">二套</option>
+              <option value="2">三套及以上</option>
+            </select>
+          </div>
+          <div></div>
+          <div>
+            <span>房屋类型：</span>
+            <select id="houseType" onchange="onSelect()">
+              <option value="0" selected>高层</option>
+              <option value="1">叠墅</option>
+            </select>
+          </div>
+          <div class="calc-buttons">
+            <button class="calc-button blue-bg" onclick="onCalculate()">
+              计算
+            </button>
+            <button class="calc-button red-bg" onclick="clearAll()">
+              清空
+            </button>
+          </div>
+        </div>
+        <div class="info">
+          <span>说明:</span>
+          <span style="line-height: 24px">
+            1、房产税：90平（含）以下为1%，首套90平以上为1.5%，二套90平以上为2%，三套及以上为3%，计算公式为毛坯总价X税费比例。
+          </span>
+          <span>
+            2、维修基金：有电梯14层以下（含14层）住宅为61元/平，有电梯15层以上（含15层）住宅为73元/平。高层物业费2.98元/平，叠墅3.84元/平，按照建筑面积来算。
+          </span>
+        </div>
+        <table class="table">
+          <tr>
+            <th>费用类别</th>
+            <th>参考基数</th>
+            <th>单项共计</th>
+          </tr>
+          <tr>
+            <td>房产税:</td>
+            <td>
+              <span style="font-size: 13px">税费比例:</span>
+              <select style="width: 50%" disabled id="taxRate">
+                <option value="0.01">1%</option>
+                <option value="0.015">1.5%</option>
+                <option value="0.02">2%</option>
+                <option value="0.03">3%</option>
+              </select>
+            </td>
+            <td>
+              <span id="taxes"></span>
+            </td>
+          </tr>
+          <tr>
+            <td>维修基金：</td>
+            <td>
+              <select style="width: 100%" disabled id="repairFund">
+                <option value="61">61元/平</option>
+                <option value="73">73元/平</option>
+              </select>
+            </td>
+            <td>
+              <span id="repair"></span>
+            </td>
+          </tr>
+          <tr>
+            <td>物业服务费：</td>
+            <td>
+              <div>
+                <span id="propertyPrice"> 2.98</span><span>元/平每月;</span>
+              </div>
+              <div>预缴一年</div>
+            </td>
+            <td>
+              <span id="property"></span>
+            </td>
+          </tr>
+          <tr>
+            <td>电、燃气、水费（预存）：</td>
+            <td>
+              <input
+                style="width: 100%"
+                id="elFee"
+                placeholder="请输入费用..."
+                oninput="onElFeeInput()"
+                type="text"
+              />
+            </td>
+            <td>
+              <span id="feeTotal"></span>
+            </td>
+          </tr>
+          <tr>
+            <td>不含契税合计：</td>
+            <td></td>
+            <td>
+              <span id="noTaxes"></span>
+            </td>
+          </tr>
+          <tr>
+            <td>总计：</td>
+            <td></td>
+            <td>
+              <span id="total"></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
